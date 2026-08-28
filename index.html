@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OneConnect - National Scheme & Citizen Service Listing Portal</title>
+    <meta name="description" content="Discover, check eligibility, and apply for 500+ government welfare schemes, education scholarships, healthcare subsidies, and business grants in one portal.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="container navbar-container">
+            <a href="#" class="brand-logo">
+                <img src="logo.jpeg" alt="OneConnect Logo" class="brand-logo-img">
+                <span>One<span class="gradient-text">Connect</span></span>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="#hero" class="nav-link active">Home</a></li>
+                <li><a href="#categories" class="nav-link">Service Categories</a></li>
+                <li><a href="#eligibility" class="nav-link">Eligibility Wizard</a></li>
+                <li><a href="#catalog" class="nav-link">Browse Schemes</a></li>
+                <li><a href="#tracker" class="nav-link">Track Application</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark mode">
+                    <svg id="sunIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <svg id="moonIcon" style="display: none;" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </button>
+                <button class="btn btn-primary" onclick="openEligibilityWizard()">Check Eligibility</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="hero">
+            <div class="container hero-content">
+                <!-- Hero Brand Emblem -->
+                <div style="display: inline-flex; align-items: center; gap: 0.85rem; background: var(--bg-surface); padding: 0.6rem 1.4rem; border-radius: var(--radius-full); border: 1.5px solid var(--border-glass); box-shadow: var(--shadow-md); margin-bottom: 1.75rem;">
+                    <img src="logo.jpeg" alt="OneConnect Logo" style="height: 36px; width: 36px; object-fit: cover; border-radius: 8px; border: 1px solid var(--primary);">
+                    <span style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary);">One<span class="gradient-text">Connect</span></span>
+                    <span style="height: 14px; width: 1px; background: var(--border-glass);"></span>
+                    <span style="font-size: 0.85rem; font-weight: 700; color: var(--primary);">Official Citizen Portal</span>
+                </div>
+
+                <h1 class="hero-title">
+                    Empowering Citizens with <br><span class="gradient-text">Direct Access to 500+ Schemes</span>
+                </h1>
+                <p class="hero-description">
+                    Find financial subsidies, education scholarships, healthcare coverage, and business incentives tailored specifically to your eligibility profile.
+                </p>
+
+                <!-- Search Box -->
+                <div class="hero-search-box">
+                    <div class="search-input-group">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <input type="text" id="heroSearchInput" class="hero-search-input" placeholder="Search by scheme name, subsidy, keyword, or beneficiary type...">
+                    </div>
+                    <button class="btn btn-primary btn-lg" onclick="triggerSearch()">Search Schemes</button>
+                </div>
+
+                <!-- Quick Topic Chips -->
+                <div class="quick-chips">
+                    <span class="chip-label">Popular Topics:</span>
+                    <button class="chip" onclick="filterChip('Farmers')">🚜 Farmers</button>
+                    <button class="chip" onclick="filterChip('Scholarship')">🎓 Merit Scholarship</button>
+                    <button class="chip" onclick="filterChip('Health')">🏥 Health Insurance</button>
+                    <button class="chip" onclick="filterChip('MSME')">🏭 MSME Loans</button>
+                    <button class="chip" onclick="filterChip('Housing')">🏠 Affordable Housing</button>
+                    <button class="chip" onclick="filterChip('Senior')">👴 Senior Pension</button>
+                </div>
+
+                <!-- Live Key Metrics Bar -->
+                <div class="hero-stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="statSchemes">520+</div>
+                        <div class="stat-label">Active Schemes Listed</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="statBeneficiaries">14.8M</div>
+                        <div class="stat-label">Citizens Enrolled</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="statSubsidies">$6.4B</div>
+                        <div class="stat-label">Subsidies Disbursed</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="statTime">48 Hrs</div>
+                        <div class="stat-label">Avg. Sanction Time</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3 Core Module Feature Boxes Section -->
+        <section id="categories" class="section-padding" style="background: rgba(29, 78, 216, 0.02);">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-tag">Core Service Domains</div>
+                    <h2 class="section-title">Explore Featured <span class="gradient-text">Scheme Category Modules</span></h2>
+                    <p class="section-subtitle">Browse through our three primary service modules designed to provide target support for welfare, education, and economic growth.</p>
+                </div>
+
+                <div class="module-boxes-grid">
+                    <!-- Module Box 1: Welfare & Healthcare -->
+                    <div class="module-box-card module-welfare" onclick="openModuleModal('welfare')">
+                        <div class="module-box-header">
+                            <div class="module-icon-wrap">
+                                🏦
+                            </div>
+                            <span class="module-count-badge">180+ Schemes</span>
+                        </div>
+                        <h3 class="module-box-title gradient-welfare-text">Financial Welfare & Healthcare Subsidies</h3>
+                        <p class="module-box-desc">
+                            Direct income transfers, universal health coverage, senior pensions, disability support, and emergency relief programs.
+                        </p>
+                        <ul class="module-highlights">
+                            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Universal Health Shield Cover ($5,000/yr)</li>
+                            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Senior Citizen Monthly Pension Plan</li>
+                            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Emergency Disaster Relief Assistance</li>
+                        </ul>
+                        <div class="module-action-bar">
+                            <span class="explore-text">Explore Module Details &rarr;</span>
+                            <span class="btn btn-sm btn-secondary">Open Portal</span>
+                        </div>
+                    </div>
+
+                    <!-- Module Box 2: Education & Skills -->
+                    <div class="module-box-card module-education" onclick="openModuleModal('education')">
+                        <div class="module-box-header">
+                            <div class="module-icon-wrap">
+                                🎓
+                            </div>
+                            <span class="module-count-badge">145+ Schemes</span>
+                        </div>
+                        <h3 class="module-box-title gradient-edu-text">Education, Scholarships & Youth Skills</h3>
+                        <p class="module-box-desc">
+                            Merit-based scholarships, tuition fee waivers, digital device grants, higher education loans, and skill certifications.
+                        </p>
+                        <ul class="module-highlights">
+                            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> National STEM Higher Education Grant</li>
+                            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Free Student Digital Laptop Initiative</li>
+                            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> 100% Subsidized Tech Skill Bootcamps</li>
+                        </ul>
+                        <div class="module-action-bar">
+                            <span class="explore-text">Explore Module Details &rarr;</span>
+                            <span class="btn btn-sm btn-secondary">Open Portal</span>
+                        </div>
+                    </div>
+
+                    <!-- Module Box 3: Business & Agriculture -->
+                    <div class="module-box-card module-business" onclick="openModuleModal('business')">
+                        <div class="module-box-header">
+                            <div class="module-icon-wrap">
+                                🚜
+                            </div>
+                            <span class="module-count-badge">195+ Schemes</span>
+                        </div>
+                        <h3 class="module-box-title gradient-biz-text">Business, Agriculture & MSME Subsidies</h3>
+                        <p class="module-box-desc">
+                            Farmer crop insurance, solar equipment incentives, collateral-free MSME business loans, and startup seed capital.
+                        </p>
+                        <ul class="module-highlights">
+                            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> PM Agriculture Crop Protection Policy</li>
+                            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Zero-Collateral MSME Working Capital</li>
+                            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Solar Agriculture Pump Subsidy (80%)</li>
+                        </ul>
+                        <div class="module-action-bar">
+                            <span class="explore-text">Explore Module Details &rarr;</span>
+                            <span class="btn btn-sm btn-secondary">Open Portal</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Eligibility Wizard Section -->
+        <section id="eligibility" class="section-padding">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-tag">Instant Match Tool</div>
+                    <h2 class="section-title">Check Your <span class="gradient-text">Scheme Eligibility</span> in Seconds</h2>
+                    <p class="section-subtitle">Answer 4 quick questions to filter government schemes customized to your profile.</p>
+                </div>
+
+                <div class="wizard-card">
+                    <div class="wizard-steps-indicator">
+                        <div class="step-item active" id="stepIndicator1">
+                            <div class="step-number">1</div>
+                            <div class="step-label">Category</div>
+                        </div>
+                        <div class="step-item" id="stepIndicator2">
+                            <div class="step-number">2</div>
+                            <div class="step-label">Age Group</div>
+                        </div>
+                        <div class="step-item" id="stepIndicator3">
+                            <div class="step-number">3</div>
+                            <div class="step-label">Household Income</div>
+                        </div>
+                        <div class="step-item" id="stepIndicator4">
+                            <div class="step-number">4</div>
+                            <div class="step-label">Matched Schemes</div>
+                        </div>
+                    </div>
+
+                    <div class="wizard-content">
+                        <!-- Step 1 Panel -->
+                        <div class="wizard-step-panel active" id="wizardStep1">
+                            <h3>Select Your Primary Need:</h3>
+                            <div class="form-grid-options">
+                                <label class="option-card-radio">
+                                    <input type="radio" name="wizardNeed" value="healthcare" checked>
+                                    <div class="option-card-content">
+                                        <div class="option-icon">🏥</div>
+                                        <div class="option-title">Health & Pension</div>
+                                    </div>
+                                </label>
+                                <label class="option-card-radio">
+                                    <input type="radio" name="wizardNeed" value="education">
+                                    <div class="option-card-content">
+                                        <div class="option-icon">🎓</div>
+                                        <div class="option-title">Education & Student</div>
+                                    </div>
+                                </label>
+                                <label class="option-card-radio">
+                                    <input type="radio" name="wizardNeed" value="business">
+                                    <div class="option-card-content">
+                                        <div class="option-icon">💼</div>
+                                        <div class="option-title">Business & MSME</div>
+                                    </div>
+                                </label>
+                                <label class="option-card-radio">
+                                    <input type="radio" name="wizardNeed" value="agriculture">
+                                    <div class="option-card-content">
+                                        <div class="option-icon">🌾</div>
+                                        <div class="option-title">Farming & Agribusiness</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Step 2 Panel -->
+                        <div class="wizard-step-panel" id="wizardStep2">
+                            <h3>Select Applicant Age Bracket:</h3>
+                            <div class="form-grid-options">
+                                <label class="option-card-radio">
+                                    <input type="radio" name="wizardAge" value="18-25" checked>
+                                    <div class="option-card-content">
+                                        <div class="option-icon">🧑‍🎓</div>
+                                        <div class="option-title">18 - 25 Years (Youth)</div>
+                                    </div>
+                                </label>
+                                <label class="option-card-radio">
+                                    <input type="radio" name="wizardAge" value="26-45">
+                                    <div class="option-card-content">
+                                        <div class="option-icon">👔</div>
+                                        <div class="option-title">26 - 45 Years (Working)</div>
+                                    </div>
+                                </label>
+                                <label class="option-card-radio">
+                                    <input type="radio" name="wizardAge" value="46-60">
+                                    <div class="option-card-content">
+                                        <div class="option-icon">👨‍🌾</div>
+                                        <div class="option-title">46 - 60 Years</div>
+                                    </div>
+                                </label>
+                                <label class="option-card-radio">
+                                    <input type="radio" name="wizardAge" value="60+">
+                                    <div class="option-card-content">
+                                        <div class="option-icon">👴</div>
+                                        <div class="option-title">60+ Years (Senior)</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 Panel -->
+                        <div class="wizard-step-panel" id="wizardStep3">
+                            <h3>Select Annual Family Income Range:</h3>
+                            <div class="form-grid-options">
+                                <label class="option-card-radio">
+                                    <input type="radio" name="wizardIncome" value="low" checked>
+                                    <div class="option-card-content">
+                                        <div class="option-icon">📉</div>
+                                        <div class="option-title">Below $3,000 / Year</div>
+                                    </div>
+                                </label>
+                                <label class="option-card-radio">
+                                    <input type="radio" name="wizardIncome" value="mid">
+                                    <div class="option-card-content">
+                                        <div class="option-icon">📊</div>
+                                        <div class="option-title">$3,000 - $8,000 / Year</div>
+                                    </div>
+                                </label>
+                                <label class="option-card-radio">
+                                    <input type="radio" name="wizardIncome" value="high">
+                                    <div class="option-card-content">
+                                        <div class="option-icon">📈</div>
+                                        <div class="option-title">Above $8,000 / Year</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Step 4 Panel (Matched Results) -->
+                        <div class="wizard-step-panel" id="wizardStep4">
+                            <div style="text-align: center;">
+                                <div style="font-size: 3rem; margin-bottom: 0.5rem;">🎉</div>
+                                <h3>We Found <span id="wizardMatchCount" class="gradient-text">4 Eligible Schemes</span> For You!</h3>
+                                <p style="color: var(--text-secondary); margin-top: 0.5rem;">Based on your inputs, here are top recommended subsidies:</p>
+                                <div id="wizardMatchedList" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 1.5rem; text-align: left;">
+                                    <!-- Dynamic items -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="wizard-nav-controls">
+                        <button class="btn btn-secondary" id="wizardPrevBtn" onclick="navigateWizard(-1)" style="visibility: hidden;">&larr; Back</button>
+                        <button class="btn btn-primary" id="wizardNextBtn" onclick="navigateWizard(1)">Next Step &rarr;</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scheme Catalog Grid -->
+        <section id="catalog" class="section-padding" style="background: rgba(29, 78, 216, 0.02);">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-tag">Public Catalog</div>
+                    <h2 class="section-title">All Active <span class="gradient-text">Government Schemes</span></h2>
+                    <p class="section-subtitle">Filter by category or keyword to read scheme guidelines and application procedures.</p>
+                </div>
+
+                <div class="catalog-filters">
+                    <div class="filter-categories">
+                        <button class="filter-btn active" onclick="filterCatalog('all', this)">All Categories</button>
+                        <button class="filter-btn" onclick="filterCatalog('welfare', this)">Healthcare & Welfare</button>
+                        <button class="filter-btn" onclick="filterCatalog('education', this)">Education & Skills</button>
+                        <button class="filter-btn" onclick="filterCatalog('business', this)">Business & MSME</button>
+                    </div>
+                </div>
+
+                <div class="scheme-grid" id="schemeGrid">
+                    <!-- Dynamic Scheme Cards injected via JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Application Status Tracker Widget -->
+        <section id="tracker" class="section-padding">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-tag">Live Status Portal</div>
+                    <h2 class="section-title">Track Your <span class="gradient-text">Application Status</span></h2>
+                    <p class="section-subtitle">Enter your official application reference number to view real-time status.</p>
+                </div>
+
+                <div class="tracker-card">
+                    <form class="tracker-search-form" onsubmit="trackApplication(event)">
+                        <input type="text" id="trackerInput" class="tracker-input" placeholder="e.g. ONE-2026-8942" value="ONE-2026-8942" required>
+                        <button type="submit" class="btn btn-primary">Track Status</button>
+                    </form>
+
+                    <div id="trackerResultView">
+                        <div style="margin-bottom: 2rem; background: var(--bg-surface-elevated); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-glass); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                            <div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted);">Application Ref:</div>
+                                <div style="font-size: 1.1rem; font-weight: 700;" id="appRefDisplay">ONE-2026-8942</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted);">Scheme Title:</div>
+                                <div style="font-size: 1.1rem; font-weight: 700;" id="appSchemeDisplay">PM National Merit Scholarship 2026</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted);">Current Status:</div>
+                                <span class="badge-tag badge-education" id="appBadgeDisplay">Document Verification</span>
+                            </div>
+                        </div>
+
+                        <div class="tracker-steps">
+                            <div class="tracker-step-box completed">
+                                <div class="tracker-icon">✓</div>
+                                <div style="font-weight: 700; font-size: 0.95rem;">Step 1: Submitted</div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Aug 24, 2026</div>
+                            </div>
+                            <div class="tracker-step-box active">
+                                <div class="tracker-icon">2</div>
+                                <div style="font-weight: 700; font-size: 0.95rem;">Step 2: Verification</div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">In Progress</div>
+                            </div>
+                            <div class="tracker-step-box">
+                                <div class="tracker-icon">3</div>
+                                <div style="font-weight: 700; font-size: 0.95rem;">Step 3: Approval</div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Pending</div>
+                            </div>
+                            <div class="tracker-step-box">
+                                <div class="tracker-icon">4</div>
+                                <div style="font-weight: 700; font-size: 0.95rem;">Step 4: Disbursed</div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Direct Transfer</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="brand-logo">
+                        <img src="logo.jpeg" alt="OneConnect Logo" class="brand-logo-img">
+                        <span>One<span class="gradient-text">Connect</span></span>
+                    </a>
+                    <p>
+                        Official single-window portal for discovering, verifying eligibility, and applying for government schemes, public services, and financial subsidies.
+                    </p>
+                </div>
+
+                <div class="footer-col">
+                    <h5>Quick Links</h5>
+                    <ul class="footer-links">
+                        <li><a href="#hero">Home</a></li>
+                        <li><a href="#categories">Service Categories</a></li>
+                        <li><a href="#eligibility">Eligibility Wizard</a></li>
+                        <li><a href="#catalog">Browse Schemes</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h5>Service Modules</h5>
+                    <ul class="footer-links">
+                        <li><a href="javascript:void(0)" onclick="openModuleModal('welfare')">Welfare & Health</a></li>
+                        <li><a href="javascript:void(0)" onclick="openModuleModal('education')">Education & Youth</a></li>
+                        <li><a href="javascript:void(0)" onclick="openModuleModal('business')">Business & Agriculture</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h5>Help Desk</h5>
+                    <ul class="footer-links">
+                        <li><a href="#">Toll Free: 1800-11-2026</a></li>
+                        <li><a href="#">support@oneconnect.gov</a></li>
+                        <li><a href="#">Grievance Portal</a></li>
+                        <li><a href="#">FAQs & Documentation</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div>&copy; 2026 OneConnect Portal. Government & Citizen Service Network. All Rights Reserved.</div>
+                <div style="display: flex; gap: 1.5rem;">
+                    <a href="#" style="color: var(--text-muted); text-decoration: none;">Privacy Policy</a>
+                    <a href="#" style="color: var(--text-muted); text-decoration: none;">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE MODULE PREVIEW MODAL -->
+    <div class="modal-backdrop" id="moduleModalBackdrop">
+        <div class="modal-container">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <div id="modalModuleIcon" style="font-size: 2rem;">🏦</div>
+                    <div>
+                        <h3 id="modalModuleTitle">Module Title</h3>
+                        <span id="modalModuleBadge" class="badge-tag badge-welfare">Category</span>
+                    </div>
+                </div>
+                <button class="modal-close-btn" onclick="closeModuleModal()">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="modal-tabs">
+                    <button class="modal-tab-btn active" onclick="switchModalTab('schemes', this)">Available Schemes</button>
+                    <button class="modal-tab-btn" onclick="switchModalTab('checklist', this)">Document Checklist</button>
+                    <button class="modal-tab-btn" onclick="switchModalTab('applyDemo', this)">Apply Simulator</button>
+                </div>
+
+                <!-- Tab 1: Schemes List -->
+                <div class="modal-tab-content active" id="modalTabSchemes">
+                    <div id="modalSchemesContainer" style="display: grid; gap: 1rem;">
+                        <!-- Injected via JS -->
+                    </div>
+                </div>
+
+                <!-- Tab 2: Document Checklist -->
+                <div class="modal-tab-content" id="modalTabChecklist">
+                    <h4>Required Documents for Application:</h4>
+                    <p style="color: var(--text-secondary); margin-bottom: 1.25rem;">Make sure you have scanned copies of the following documents before submitting your application:</p>
+                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.85rem;" id="modalDocumentList">
+                        <!-- Injected via JS -->
+                    </ul>
+                </div>
+
+                <!-- Tab 3: Apply Simulator -->
+                <div class="modal-tab-content" id="modalTabApplyDemo">
+                    <form onsubmit="submitDemoApplication(event)">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                            <div>
+                                <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem;">Full Legal Name:</label>
+                                <input type="text" class="tracker-input" style="width: 100%;" placeholder="e.g. Sarah Jenkins" required>
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem;">Citizen Identification Number / Aadhaar:</label>
+                                <input type="text" class="tracker-input" style="width: 100%;" placeholder="e.g. ID-9842-105" required>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem;">Select Specific Scheme:</label>
+                            <select id="modalSchemeSelect" class="tracker-input" style="width: 100%;" required>
+                                <!-- Options via JS -->
+                            </select>
+                        </div>
+
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem;">Contact Mobile & Email:</label>
+                            <input type="email" class="tracker-input" style="width: 100%;" placeholder="sarah@example.com" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Application & Get Tracking ID</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

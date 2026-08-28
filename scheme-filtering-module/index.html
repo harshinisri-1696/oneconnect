@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scheme Filtering Module Integration Sandbox</title>
+  <meta name="description" content="A demonstration sandbox for testing the isolated Scheme Filtering, Listing results, and chatbot Assistant integration module.">
+  
+  <!-- 1. Include Module CSS -->
+  <link rel="stylesheet" href="css/scheme-filter.css">
+  
+  <!-- Demo Environment Styling (represents the host application) -->
+  <style>
+    :root {
+      --app-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --app-bg: #F0F2F5;
+      --app-card-bg: #FFFFFF;
+      --app-border: #E2E8F0;
+      --app-text: #1E293B;
+      --app-primary: #4169E1;
+    }
+    
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--app-font);
+      background-color: var(--app-bg);
+      color: var(--app-text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* HOST APP BAR */
+    .app-header {
+      background-color: var(--app-card-bg);
+      border-bottom: 1px solid var(--app-border);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    
+    .app-logo {
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--app-primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .app-nav-badge {
+      background-color: #E8F0FF;
+      color: var(--app-primary);
+      padding: 0.25rem 0.75rem;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    /* MAIN CONTENT FRAME */
+    .app-main-layout {
+      flex: 1;
+      max-width: 1200px;
+      width: 100%;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* HOST APP PROFILE CARD */
+    .host-profile-card {
+      background-color: var(--app-card-bg);
+      border: 1px solid var(--app-border);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .profile-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .profile-details h2 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .profile-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.25rem;
+    }
+
+    .profile-chip {
+      background-color: #F1F5F9;
+      border: 1px solid var(--app-border);
+      color: #475569;
+      font-size: 0.8rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+    }
+
+    .host-btn {
+      background-color: var(--app-primary);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 4px;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: background-color 0.2s;
+    }
+
+    .host-btn:hover {
+      background-color: #1E3A8A;
+    }
+
+    .host-btn-secondary {
+      background-color: #FFFFFF;
+      color: #475569;
+      border: 1px solid var(--app-border);
+    }
+    
+    .host-btn-secondary:hover {
+      background-color: #F8FAFC;
+    }
+
+    /* MOCK PROFILE MODAL (HOST APPLICATION OWNED) */
+    .host-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(30, 41, 59, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10001;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .host-modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .host-modal-card {
+      background: #FFFFFF;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      border: 1px solid var(--app-border);
+    }
+
+    .host-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid var(--app-border);
+      padding-bottom: 0.75rem;
+    }
+
+    .host-modal-header h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .host-modal-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.25rem;
+      line-height: 1;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    
+    .form-group.full-width {
+      grid-column: span 2;
+    }
+
+    .form-group label {
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .form-input, .form-select {
+      height: 2.25rem;
+      border: 1px solid var(--app-border);
+      border-radius: 4px;
+      padding: 0 0.5rem;
+      font-size: 0.85rem;
+      font-family: inherit;
+    }
+
+    .host-modal-footer {
+      margin-top: 1.5rem;
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+    }
+
+    /* FOOTER */
+    .app-footer {
+      background-color: var(--app-card-bg);
+      border-top: 1px solid var(--app-border);
+      padding: 1.25rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #64748B;
+      margin-top: auto;
+    }
+
+    /* MODULE CONTAINER CONTAINER */
+    .module-integration-card {
+      background-color: transparent;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HOST APPLICATION HEADER -->
+  <header class="app-header">
+    <a href="#" class="app-logo">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color:var(--app-primary);">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+      </svg>
+      GovCenter
+    </a>
+    <span class="app-nav-badge">Merger Module Test</span>
+  </header>
+
+  <!-- MAIN ENVIRONMENT CONTAINER -->
+  <main class="app-main-layout">
+    
+    <!-- HOST APPLICATION SIMULATED PROFILE CARD -->
+    <section class="host-profile-card">
+      <div class="profile-details">
+        <h2>Simulated Active Citizen Profile</h2>
+        <div class="profile-chips" id="demoProfileSummary">
+          <!-- Populated dynamically by demo logic -->
+        </div>
+      </div>
+      <div style="display:flex; gap:0.5rem;">
+        <button type="button" class="host-btn host-btn-secondary" id="demoPersonalizeToggle">
+          Sort: Eligible First
+        </button>
+        <button type="button" class="host-btn" id="demoEditProfileBtn">
+          Edit Profile
+        </button>
+      </div>
+    </section>
+
+    <!-- INTEGRATION CONTAINER FOR THE MODULE -->
+    <section class="module-integration-card">
+      <div id="scheme-filter-container"></div>
+    </section>
+
+  </main>
+
+  <!-- HOST APPLICATION FOOTER -->
+  <footer class="app-footer">
+    © 2026 GovCenter Portal • Isolated Module Integration Sandbox
+  </footer>
+
+  <!-- HOST APPLICATION EDIT PROFILE MODAL -->
+  <div class="host-modal-overlay" id="hostProfileModal">
+    <div class="host-modal-card">
+      <div class="host-modal-header">
+        <h3>Edit Citizen Profile</h3>
+        <button type="button" class="host-modal-close" id="hostModalCloseX">&times;</button>
+      </div>
+      <form id="hostProfileForm">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="hostAge">Age (Years)</label>
+            <input type="number" class="form-input" id="hostAge" min="1" max="110" required>
+          </div>
+          <div class="form-group">
+            <label for="hostState">State / UT</label>
+            <select class="form-select" id="hostState" required>
+              <option value="Tamil Nadu">Tamil Nadu</option>
+              <option value="Puducherry">Puducherry</option>
+              <option value="Karnataka">Karnataka</option>
+              <option value="Maharashtra">Maharashtra</option>
+              <option value="Delhi">Delhi</option>
+              <option value="Uttar Pradesh">Uttar Pradesh</option>
+              <option value="Kerala">Kerala</option>
+              <option value="Gujarat">Gujarat</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="hostGender">Gender</label>
+            <select class="form-select" id="hostGender" required>
+              <option value="Female">Female</option>
+              <option value="Male">Male</option>
+              <option value="Transgender">Transgender</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="hostOccupation">Occupation</label>
+            <select class="form-select" id="hostOccupation" required>
+              <option value="Student">Student</option>
+              <option value="Farmer">Farmer / Agriculture</option>
+              <option value="Job Seeker">Job Seeker</option>
+              <option value="Entrepreneur">Small Business / MSME</option>
+              <option value="Senior Citizen">Senior Citizen</option>
+              <option value="Unemployed">Unemployed</option>
+            </select>
+          </div>
+          <div class="form-group full-width">
+            <label for="hostIncome">Annual Family Income (₹)</label>
+            <input type="number" class="form-input" id="hostIncome" step="10000" required>
+          </div>
+          <div class="form-group full-width" style="flex-direction:row; align-items:center; gap:0.5rem; margin-top:0.25rem;">
+            <input type="checkbox" id="hostDisability" style="width:18px; height:18px; cursor:pointer;">
+            <label for="hostDisability" style="cursor:pointer; font-weight:normal; font-size:0.85rem;">Person with Disability (PwD)</label>
+          </div>
+        </div>
+        <div class="host-modal-footer">
+          <button type="button" class="host-btn host-btn-secondary" id="hostModalCancel">Cancel</button>
+          <button type="submit" class="host-btn">Apply Settings</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. Include Scheme Dataset -->
+  <script src="data/schemes_data.js"></script>
+
+  <!-- 3. Include Module Components -->
+  <script src="js/scheme-results.js"></script>
+  <script src="js/scheme-filter.js"></script>
+
+  <!-- Demo Harness Logic -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Initial Citizen Profile
+      let activeProfile = {
+        age: 22,
+        state: 'Tamil Nadu',
+        gender: 'Female',
+        occupation: 'Student',
+        income: 150000,
+        disability: false
+      };
+
+      // Helper: Render Profile banner in Host App
+      function updateDemoProfileBanner(p) {
+        const bar = document.getElementById('demoProfileSummary');
+        if (!bar) return;
+        bar.innerHTML = `
+          <span class="profile-chip"><strong>Age:</strong> ${p.age}</span>
+          <span class="profile-chip"><strong>State:</strong> ${p.state}</span>
+          <span class="profile-chip"><strong>Gender:</strong> ${p.gender}</span>
+          <span class="profile-chip"><strong>Occupation:</strong> ${p.occupation}</span>
+          <span class="profile-chip"><strong>Income:</strong> ₹${parseInt(p.income, 10).toLocaleString()}</span>
+          <span class="profile-chip"><strong>PwD:</strong> ${p.disability ? 'Yes' : 'No'}</span>
+        `;
+      }
+
+      // Render initial demo profile
+      updateDemoProfileBanner(activeProfile);
+
+      // 2. Initialize the Reusable Filtering Module
+      const schemeModule = window.initializeSchemeModule({
+        container: '#scheme-filter-container',
+        dataset: window.SCHEMES_DATA || [],
+        profile: activeProfile,
+        onFilterChange: (data) => {
+          console.log('Sandbox - Filter change detected:', data);
+        },
+        onSchemeSelect: (scheme) => {
+          console.log('Sandbox - Scheme selected:', scheme);
+        }
+      });
+
+      // 3. Bind host profile editor interactions
+      const editBtn = document.getElementById('demoEditProfileBtn');
+      const modal = document.getElementById('hostProfileModal');
+      const closeX = document.getElementById('hostModalCloseX');
+      const cancelBtn = document.getElementById('hostModalCancel');
+      const form = document.getElementById('hostProfileForm');
+
+      const showModal = () => {
+        document.getElementById('hostAge').value = activeProfile.age;
+        document.getElementById('hostState').value = activeProfile.state;
+        document.getElementById('hostGender').value = activeProfile.gender;
+        document.getElementById('hostOccupation').value = activeProfile.occupation;
+        document.getElementById('hostIncome').value = activeProfile.income;
+        document.getElementById('hostDisability').checked = activeProfile.disability;
+        modal.classList.add('open');
+      };
+
+      const hideModal = () => {
+        modal.classList.remove('open');
+      };
+
+      editBtn.addEventListener('click', showModal);
+      closeX.addEventListener('click', hideModal);
+      cancelBtn.addEventListener('click', hideModal);
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        // Retrieve new values
+        activeProfile = {
+          age: parseInt(document.getElementById('hostAge').value, 10) || 18,
+          state: document.getElementById('hostState').value,
+          gender: document.getElementById('hostGender').value,
+          occupation: document.getElementById('hostOccupation').value,
+          income: parseInt(document.getElementById('hostIncome').value, 10) || 0,
+          disability: document.getElementById('hostDisability').checked
+        };
+
+        // Pass updated profile data into the Module via public API
+        schemeModule.updateProfile(activeProfile);
+
+        // Update host interface
+        updateDemoProfileBanner(activeProfile);
+        hideModal();
+      });
+
+      // 4. Toggle Personalization Sort state from host app toolbar
+      const sortBtn = document.getElementById('demoPersonalizeToggle');
+      sortBtn.addEventListener('click', () => {
+        const isPersonalized = sortBtn.classList.contains('active');
+        if (isPersonalized) {
+          sortBtn.classList.remove('active');
+          sortBtn.textContent = 'Sort: Eligible First';
+          schemeModule.setFilters({ sortBy: 'relevance' });
+        } else {
+          sortBtn.classList.add('active');
+          sortBtn.textContent = 'Sort: Standard';
+          schemeModule.setFilters({ sortBy: 'personalized' });
+        }
+      });
+
+    });
+  </script>
+</body>
+</html>

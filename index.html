@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>One Connect — Government Job Listings</title>
+  <meta name="description" content="Browse and check eligibility for government jobs across SSC, TNPSC, Banking, Railways and more.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="page-topbar">
+    <div class="topbar-inner">
+      <div class="topbar-brand">
+        <img src="gov logo.png" alt="One Connect Logo" class="topbar-logo">
+        <div>
+          <div class="topbar-title">One Connect</div>
+        </div>
+      </div>
+      <div class="topbar-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="text" id="globalSearchInput" placeholder="Search jobs — SSC, TNPSC, Banking, Railways...">
+      </div>
+    </div>
+  </div>
+
+  <main class="page-main">
+
+    <!-- ===== CATEGORY FILTER ===== -->
+    <div class="category-bar" id="categoryBar">
+      <button class="cat-chip active" data-cat="all">🏛️ All Jobs</button>
+      <button class="cat-chip" data-cat="central">🇮🇳 Central (SSC/UPSC)</button>
+      <button class="cat-chip" data-cat="state">🌴 State (TNPSC)</button>
+      <button class="cat-chip" data-cat="banking">🏦 Banking</button>
+      <button class="cat-chip" data-cat="railway">🚆 Railway (RRB)</button>
+    </div>
+
+    <!-- ===== ELIGIBILITY CHECKER ===== -->
+    <section class="section-block" id="eligibilitySection">
+      <div class="section-heading">
+        <h2>⚖️ Eligibility Checker</h2>
+        <p>Point-by-point evaluation against official gazette requirements</p>
+      </div>
+
+      <div class="elig-card">
+        <form id="eligibilityForm">
+          <div class="form-grid">
+
+            <div class="form-group full-width">
+              <label class="form-label" for="jobSelect">Target Post <span class="req">*</span></label>
+              <select id="jobSelect" class="form-control"></select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="userAge">Age (Years) <span class="req">*</span></label>
+              <input type="number" id="userAge" class="form-control" value="22" min="16" max="60">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="userDegree">Degree / Level <span class="req">*</span></label>
+              <select id="userDegree" class="form-control">
+                <option value="B.Com">B.Com (Commerce)</option>
+                <option value="B.E/B.Tech">B.E / B.Tech (Engineering)</option>
+                <option value="B.Sc">B.Sc (Science)</option>
+                <option value="B.A">B.A (Arts)</option>
+                <option value="Any Graduate">Any Bachelor Degree</option>
+                <option value="12th">12th / HSC</option>
+                <option value="10th">10th / SSLC</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="userPercentage">Percentage (%)</label>
+              <input type="number" id="userPercentage" class="form-control" value="68.5" min="0" max="100" step="0.1">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="userCategory">Category <span class="req">*</span></label>
+              <select id="userCategory" class="form-control">
+                <option value="OBC">OBC (+3 yrs)</option>
+                <option value="General">General / UR</option>
+                <option value="SC">SC (+5 yrs)</option>
+                <option value="ST">ST (+5 yrs)</option>
+                <option value="PwD">PwD (+10 yrs)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="userExp">Experience (Years)</label>
+              <input type="number" id="userExp" class="form-control" value="0" min="0" max="40">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="userState">Domicile State</label>
+              <select id="userState" class="form-control">
+                <option value="Tamil Nadu">Tamil Nadu</option>
+                <option value="All India">All India / Other</option>
+              </select>
+            </div>
+
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary btn-lg" id="checkEligBtn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              Check My Eligibility
+            </button>
+          </div>
+        </form>
+
+        <div id="scorecardResult" class="scorecard-result"></div>
+      </div>
+    </section>
+
+    <!-- ===== JOB CARDS ===== -->
+    <section class="section-block">
+      <div class="section-heading">
+        <h1>Available Positions <span class="count-badge" id="jobCount">5</span></h1>
+        <p>Click <strong>Check Eligibility</strong> on any card to verify your profile against gazette requirements</p>
+      </div>
+      <div class="jobs-grid" id="jobCardsGrid"></div>
+    </section>
+
+  </main>
+
+  <div class="toast-container" id="toastContainer"></div>
+  <script src="app.js"></script>
+</body>
+</html>

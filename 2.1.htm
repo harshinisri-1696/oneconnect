@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GovSetu AI — Government Job AI Navigator (React + FastAPI + PostgreSQL + pgvector)</title>
+  <meta name="description" content="Explainable Multilingual Government Job AI Navigator with React UI, FastAPI REST backend, PostgreSQL, and pgvector RAG grounding.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- Mobile Sidebar Backdrop Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ==================== SIDEBAR ==================== -->
+    <aside class="sidebar" id="appSidebar">
+      <!-- Brand Logo -->
+      <div class="sidebar-brand">
+        <div class="brand-logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+            <path d="M2 17l10 5 10-5"></path>
+            <path d="M2 12l10 5 10-5"></path>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <div class="brand-name">
+            GovSetu <span class="brand-badge">AI RAG</span>
+          </div>
+          <span class="brand-sub">React • FastAPI • PostgreSQL</span>
+        </div>
+      </div>
+
+      <!-- Navigation Links (8 Main Pages) -->
+      <nav class="sidebar-nav">
+        <!-- Main Pages Group -->
+        <div class="nav-section">
+          <div class="nav-section-title">Main Navigation</div>
+          
+          <!-- 1. Home -->
+          <a class="nav-item active" data-view="home" id="nav-home">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <span>Home</span>
+            <span class="nav-badge subtle">Discovery</span>
+          </a>
+
+          <!-- 2. User Profile -->
+          <a class="nav-item" data-view="profile" id="nav-profile">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>User Profile</span>
+          </a>
+
+          <!-- 3. Job Search -->
+          <a class="nav-item" data-view="search" id="nav-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <span>Job Search</span>
+          </a>
+
+          <!-- 4. Job Details -->
+          <a class="nav-item" data-view="details" id="nav-details">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+            </svg>
+            <span>Job Details</span>
+          </a>
+        </div>
+
+        <!-- AI & Engine Modules Group -->
+        <div class="nav-section">
+          <div class="nav-section-title">AI & Eligibility Services</div>
+
+          <!-- 5. Eligibility Checker -->
+          <a class="nav-item" data-view="eligibility" id="nav-eligibility">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <span>Eligibility Checker</span>
+            <span class="nav-badge subtle">Diff Engine</span>
+          </a>
+
+          <!-- 6. Recommended Jobs -->
+          <a class="nav-item" data-view="recommended" id="nav-recommended">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+            <span>Recommended Jobs</span>
+            <span class="nav-badge" style="background: var(--success); color: white;">98% Match</span>
+          </a>
+
+          <!-- 7. AI Chatbot -->
+          <a class="nav-item" data-view="chatbot" id="nav-chatbot">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <span>AI Chatbot (RAG)</span>
+            <span class="nav-badge subtle">Bilingual</span>
+          </a>
+
+          <!-- 8. Admin Dashboard -->
+          <a class="nav-item" data-view="admin" id="nav-admin">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+              <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+              <line x1="6" y1="6" x2="6.01" y2="6"></line>
+              <line x1="6" y1="18" x2="6.01" y2="18"></line>
+            </svg>
+            <span>Admin Dashboard</span>
+          </a>
+        </div>
+      </nav>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <div class="stack-status-box">
+          <div class="pulse-dot"></div>
+          <div style="font-size: 0.76rem; color: var(--dark-blue); font-weight: 600;">
+            FastAPI + PostgreSQL Active
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ==================== MAIN WRAPPER ==================== -->
+    <div class="main-wrapper">
+      
+      <!-- Top Header -->
+      <header class="top-header">
+        <div class="header-left">
+          <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          
+          <div class="header-search-bar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" class="header-search-input" placeholder="Search jobs across SSC, TNPSC, Banking, Railways...">
+          </div>
+        </div>
+
+        <div class="header-right">
+          <!-- Language Switcher -->
+          <button class="lang-toggle-btn" id="langToggleBtn" title="Toggle Language">
+            <span class="badge-lang">EN</span>
+            <span>English / தமிழ்</span>
+          </button>
+
+          <button class="btn btn-primary btn-sm" onclick="switchView('eligibility')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Check Eligibility
+          </button>
+        </div>
+      </header>
+
+      <!-- Main Body Container -->
+      <main class="content-body">
+        
+        <!-- Breadcrumb Navigation -->
+        <div class="breadcrumb-container">
+          <div class="breadcrumb-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <a href="#" onclick="switchView('home')">GovSetu AI</a>
+          </div>
+          <span class="breadcrumb-separator">/</span>
+          <div class="breadcrumb-item active" id="breadcrumb-current">Home</div>
+        </div>
+
+        <!-- Dynamic Header -->
+        <div class="page-header">
+          <div class="page-title-group">
+            <h1 id="current-page-title">Government Job Discovery</h1>
+            <p class="page-subtitle" id="current-page-sub">Verified notifications from SSC, TNPSC, Banking (SBI/IBPS), and Railways (RRB).</p>
+          </div>
+        </div>
+
+        <!-- ==================== PAGE 1: HOME ==================== -->
+        <section class="app-view active-view" id="view-home">
+          <!-- Category Chips -->
+          <div class="category-pills-bar">
+            <div class="category-chip active" data-category="all">🏛️ All Jobs</div>
+            <div class="category-chip" data-category="central">🇮🇳 Central Govt (SSC/UPSC)</div>
+            <div class="category-chip" data-category="state">🌴 State Govt (TNPSC)</div>
+            <div class="category-chip" data-category="banking">🏦 Banking (SBI/IBPS)</div>
+            <div class="category-chip" data-category="railway">🚆 Railway (RRB)</div>
+          </div>
+
+          <!-- Architecture Banner -->
+          <div class="card" style="padding: 16px 20px; background: var(--light-blue-subtle); border-color: var(--light-blue);">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+              <div style="font-size: 0.86rem; color: var(--dark-blue); font-weight: 700;">
+                ⚡ Architecture Flow: <strong>React Frontend ➔ FastAPI Backend (REST) ➔ PostgreSQL / pgvector</strong>
+              </div>
+              <span class="badge badge-royal">RAG Grounded Citations Active</span>
+            </div>
+          </div>
+
+          <!-- Jobs Grid -->
+          <div class="jobs-grid" id="jobCardsGrid"></div>
+        </section>
+
+        <!-- ==================== PAGE 2: USER PROFILE ==================== -->
+        <section class="app-view" id="view-profile">
+          <div class="profile-card-grid">
+            
+            <div class="profile-avatar-box">
+              <div class="profile-avatar-large">JT</div>
+              <div style="font-weight: 800; font-size: 1.2rem;">Jeeva Tharan R</div>
+              <div style="font-size: 0.85rem; color: var(--text-secondary);">Candidate Profile #1042</div>
+              <span class="badge badge-success">Profile 100% Complete</span>
+              
+              <div style="width: 100%; border-top: 1px solid var(--border-light); padding-top: 14px; text-align: left; font-size: 0.82rem;">
+                <div style="margin-bottom: 6px;"><strong>Database:</strong> PostgreSQL (users table)</div>
+                <div style="margin-bottom: 6px;"><strong>State Domicile:</strong> Tamil Nadu</div>
+                <div><strong>Category:</strong> OBC (+3y Age Relaxation)</div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">User Demographics & Preferences</div>
+                  <div class="card-subtitle">These details power the automatic match recommendation & deterministic rule engine.</div>
+                </div>
+              </div>
+
+              <form id="userProfileForm">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                  <div class="form-group">
+                    <label class="form-label" for="profName">Full Name</label>
+                    <input type="text" id="profName" class="form-control" value="Jeeva Tharan R">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="profAge">Age (in Years)</label>
+                    <input type="number" id="profAge" class="form-control" value="22">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="profState">Domicile State</label>
+                    <select id="profState" class="form-control">
+                      <option value="Tamil Nadu">Tamil Nadu</option>
+                      <option value="All India">All India</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="profCategory">Social Category</label>
+                    <select id="profCategory" class="form-control">
+                      <option value="OBC">OBC (+3 Years)</option>
+                      <option value="General">General (UR)</option>
+                      <option value="SC">SC (+5 Years)</option>
+                      <option value="ST">ST (+5 Years)</option>
+                      <option value="PwD">PwD (+10 Years)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div style="margin-top: 20px;">
+                  <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 10px;">Educational Credentials (education table):</div>
+                  <div id="userEduList"></div>
+                </div>
+
+                <div style="margin-top: 18px; display: flex; justify-content: flex-end;">
+                  <button type="submit" class="btn btn-primary">Save Profile (POST /users/profile)</button>
+                </div>
+              </form>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ==================== PAGE 3: JOB SEARCH ==================== -->
+        <section class="app-view" id="view-search">
+          <div class="card" style="padding: 20px; margin-bottom: 8px;">
+            <div class="card-title" style="font-size: 1rem; margin-bottom: 12px;">Multi-Facet Filter (GET /jobs?qualification=...&state=...)</div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;">
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">Qualification</label>
+                <select class="form-control">
+                  <option>Any Bachelor Degree</option>
+                  <option>B.Com</option>
+                  <option>B.E / B.Tech</option>
+                  <option>10th / SSLC</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">Location</label>
+                <select class="form-control">
+                  <option>All Locations</option>
+                  <option>Tamil Nadu</option>
+                  <option>All India</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">Min Salary</label>
+                <select class="form-control">
+                  <option>All Pay Scales</option>
+                  <option>₹30,000+ / month</option>
+                  <option>₹50,000+ / month</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="jobs-grid" id="searchJobsGrid"></div>
+        </section>
+
+        <!-- ==================== PAGE 4: JOB DETAILS ==================== -->
+        <section class="app-view" id="view-details">
+          <div id="jobDetailsContent">
+            <!-- Rendered dynamically by app.js -->
+          </div>
+        </section>
+
+        <!-- ==================== PAGE 5: ELIGIBILITY CHECKER ==================== -->
+        <section class="app-view" id="view-eligibility">
+          <div class="eligibility-box">
+            <div class="card-header" style="border-bottom: 1px solid var(--border-light); padding-bottom: 16px;">
+              <div>
+                <div class="card-title">Deterministic Explainable Rule Engine (POST /eligibility/check)</div>
+                <div class="card-subtitle">
+                  Evaluates candidate attributes strictly against gazette constraints. Generates an explainable point-by-point diff of passed and missing criteria.
+                </div>
+              </div>
+            </div>
+
+            <form id="deterministicRuleForm" style="margin-top: 20px;">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;">
+                
+                <div class="form-group" style="grid-column: 1 / -1;">
+                  <label class="form-label" for="ruleJobSelect">Target Government Post / Notification <span style="color: var(--error);">*</span></label>
+                  <select id="ruleJobSelect" class="form-control" style="font-weight: 600; color: var(--primary);"></select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="ruleUserAge">Candidate Age (Years) <span style="color: var(--error);">*</span></label>
+                  <input type="number" id="ruleUserAge" class="form-control" value="22" min="16" max="60" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="ruleUserDegree">Degree / Educational Level <span style="color: var(--error);">*</span></label>
+                  <select id="ruleUserDegree" class="form-control">
+                    <option value="B.Com">B.Com (Commerce)</option>
+                    <option value="B.E/B.Tech">B.Tech / B.E (Engineering)</option>
+                    <option value="B.Sc">B.Sc (Science)</option>
+                    <option value="B.A">B.A (Arts)</option>
+                    <option value="10th">10th / SSLC Pass</option>
+                    <option value="12th">12th / HSC Pass</option>
+                    <option value="Any Graduate">Any Bachelor Degree</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="ruleUserPercentage">Percentage (%)</label>
+                  <input type="number" id="ruleUserPercentage" class="form-control" value="68.5" min="30" max="100">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="ruleUserExp">Experience (in Years) <span style="color: var(--error);">*</span></label>
+                  <input type="number" id="ruleUserExp" class="form-control" value="0" min="0" max="25">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="ruleUserCategory">Social Category (For Age Relaxation) <span style="color: var(--error);">*</span></label>
+                  <select id="ruleUserCategory" class="form-control">
+                    <option value="OBC">OBC (+3 yrs)</option>
+                    <option value="General">General / UR (0 yrs)</option>
+                    <option value="SC">SC (+5 yrs)</option>
+                    <option value="ST">ST (+5 yrs)</option>
+                    <option value="PwD">PwD (+10 yrs)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="ruleUserState">Candidate Domicile State</label>
+                  <select id="ruleUserState" class="form-control">
+                    <option value="Tamil Nadu">Tamil Nadu</option>
+                    <option value="All India">Other / All India</option>
+                  </select>
+                </div>
+
+              </div>
+
+              <div style="margin-top: 14px; display: flex; justify-content: flex-end;">
+                <button type="submit" class="btn btn-primary btn-lg">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  Execute Deterministic Evaluation
+                </button>
+              </div>
+            </form>
+
+            <div id="ruleScorecardResult" class="scorecard-result"></div>
+          </div>
+        </section>
+
+        <!-- ==================== PAGE 6: RECOMMENDED JOBS ==================== -->
+        <section class="app-view" id="view-recommended">
+          <div class="card" style="padding: 16px 20px; background: var(--light-blue-subtle); border-color: var(--light-blue); margin-bottom: 20px;">
+            <div style="font-size: 0.88rem; color: var(--dark-blue); font-weight: 700;">
+              🎯 Personalized Recommendations for: <strong>B.Com Graduate, Age 22, Tamil Nadu (OBC)</strong>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px;">
+              Generated via <code>GET /jobs/recommended</code> using multi-attribute profile scoring.
+            </div>
+          </div>
+
+          <div class="jobs-grid" id="recommendedJobsGrid"></div>
+        </section>
+
+        <!-- ==================== PAGE 7: AI CHATBOT ==================== -->
+        <section class="app-view" id="view-chatbot">
+          <div class="chatbot-panel">
+            <div class="chatbot-header">
+              <div class="chatbot-header-info">
+                <div class="chatbot-avatar">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                </div>
+                <div>
+                  <div style="font-weight: 700; font-size: 0.95rem;">GovSetu AI RAG Assistant (Bilingual)</div>
+                  <div style="font-size: 0.75rem; opacity: 0.85;">Grounded in official gazette chunks via pgvector</div>
+                </div>
+              </div>
+              <span class="badge" style="background: rgba(255,255,255,0.2); color: white;">POST /chat</span>
+            </div>
+
+            <div class="chat-messages-container" id="chatMessagesContainer">
+              <div class="chat-msg bot">
+                <div class="chat-bubble">
+                  வணக்கம்! Welcome to GovSetu AI Assistant.<br>
+                  I use <strong>Retrieval-Augmented Generation (RAG)</strong> to answer your questions grounded in official government notifications in <strong>English</strong> and <strong>தமிழ் (Tamil)</strong>.<br><br>
+                  Ask me about qualifications, age relaxation, syllabus, or exam dates!
+                </div>
+              </div>
+            </div>
+
+            <div class="chat-quick-prompts">
+              <button class="quick-chat-btn" data-query="What government jobs are available for B.Com graduates?">💼 B.Com Govt Jobs</button>
+              <button class="quick-chat-btn" data-query="TNPSC Group 4 வயது வரம்பு மற்றும் தகுதி என்ன?">📜 TNPSC Group 4 தகுதி (தமிழ்)</button>
+              <button class="quick-chat-btn" data-query="Explain age relaxation rules for OBC and SC/ST">⏳ Age Relaxation Norms</button>
+              <button class="quick-chat-btn" data-query="How to apply for SBI PO 2026?">🏦 SBI PO Application Steps</button>
+            </div>
+
+            <div class="chatbot-input-bar">
+              <input type="text" class="chat-input" id="chatTextInput" placeholder="Ask in English or தமிழில் கேளுங்கள் (e.g. TNPSC age limit, Bank jobs for B.Com)...">
+              <button class="btn btn-primary" id="chatSendBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                Send
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== PAGE 8: ADMIN DASHBOARD ==================== -->
+        <section class="app-view" id="view-admin">
+          
+          <div class="admin-stats-grid">
+            <div class="admin-stat-card">
+              <div class="admin-stat-label">Active Notifications (JOBS)</div>
+              <div class="admin-stat-val">5 Gazettes</div>
+            </div>
+            <div class="admin-stat-card">
+              <div class="admin-stat-label">Registered Candidates (USERS)</div>
+              <div class="admin-stat-val">1,482 Users</div>
+            </div>
+            <div class="admin-stat-card">
+              <div class="admin-stat-label">Vector Chunks (pgvector)</div>
+              <div class="admin-stat-val">842 Chunks</div>
+            </div>
+            <div class="admin-stat-card">
+              <div class="admin-stat-label">FastAPI Backend Status</div>
+              <div class="admin-stat-val" style="color: var(--success); font-size: 1.3rem;">200 OK Live</div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-bottom: 24px;">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Add Official Recruitment Notification (POST /admin/jobs)</div>
+                <div class="card-subtitle">Creates structured record in PostgreSQL and vectors chunks into pgvector.</div>
+              </div>
+            </div>
+
+            <form id="adminJobCreateForm">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px;">
+                <div class="form-group">
+                  <label class="form-label" for="adminJobId">Job ID</label>
+                  <input type="text" id="adminJobId" class="form-control" value="JOB-UPSC-CSE" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="adminJobTitle">Job Title</label>
+                  <input type="text" id="adminJobTitle" class="form-control" value="UPSC Civil Services (IAS / IPS / IFS) 2026" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="adminJobOrg">Organization</label>
+                  <input type="text" id="adminJobOrg" class="form-control" value="Union Public Service Commission" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="adminJobQual">Minimum Qualification</label>
+                  <input type="text" id="adminJobQual" class="form-control" value="Any Bachelor's Degree" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="adminJobVacancies">Total Vacancies</label>
+                  <input type="number" id="adminJobVacancies" class="form-control" value="1056" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="adminJobSalary">Salary / Pay Scale</label>
+                  <input type="text" id="adminJobSalary" class="form-control" value="₹56,100 - ₹2,50,000 (Level 10)" required>
+                </div>
+              </div>
+
+              <div style="margin-top: 14px; display: flex; justify-content: flex-end;">
+                <button type="submit" class="btn btn-primary">
+                  Publish Notification to Database
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Live API Explorer -->
+          <div class="card">
+            <div class="card-title" style="font-size: 1rem; margin-bottom: 12px;">FastAPI Interactive REST API Explorer</div>
+            <div style="display: flex; flex-direction: column; gap: 8px; font-family: var(--font-mono); font-size: 0.82rem;">
+              <div style="display: flex; justify-content: space-between; padding: 8px 12px; background: var(--bg-secondary); border-radius: var(--radius-sm);">
+                <span><span class="api-endpoint-badge api-post">POST</span> /auth/login</span>
+                <span style="color: var(--text-secondary);">User Authentication & JWT Issuance</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 8px 12px; background: var(--bg-secondary); border-radius: var(--radius-sm);">
+                <span><span class="api-endpoint-badge api-post">POST</span> /users/profile</span>
+                <span style="color: var(--text-secondary);">Saves profile & education credentials</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 8px 12px; background: var(--bg-secondary); border-radius: var(--radius-sm);">
+                <span><span class="api-endpoint-badge api-get">GET</span> /jobs</span>
+                <span style="color: var(--text-secondary);">Fetches all government job notifications</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 8px 12px; background: var(--bg-secondary); border-radius: var(--radius-sm);">
+                <span><span class="api-endpoint-badge api-post">POST</span> /eligibility/check</span>
+                <span style="color: var(--text-secondary);">Deterministic Explainable Rule Engine</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 8px 12px; background: var(--bg-secondary); border-radius: var(--radius-sm);">
+                <span><span class="api-endpoint-badge api-get">GET</span> /jobs/recommended</span>
+                <span style="color: var(--text-secondary);">Personalized job recommendations</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 8px 12px; background: var(--bg-secondary); border-radius: var(--radius-sm);">
+                <span><span class="api-endpoint-badge api-post">POST</span> /chat</span>
+                <span style="color: var(--text-secondary);">Bilingual RAG Chatbot (pgvector grounding)</span>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+      </main>
+
+    </div>
+
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Application Logic -->
+  <script src="app.js"></script>
+</body>
+</html>

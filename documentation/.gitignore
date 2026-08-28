@@ -1,0 +1,7 @@
+node_modules/
+frontend/dist/
+backend/data/local_storage.json
+*.log
+.env
+.env.*
+!.env.example

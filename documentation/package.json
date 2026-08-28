@@ -1,0 +1,21 @@
+{
+  "name": "citizendoc-app",
+  "version": "1.0.0",
+  "description": "CitizenDoc - Smart Citizen Assistance Platform for Government Documents",
+  "scripts": {
+    "dev": "node start-dev.js",
+    "backend": "cd backend && node server.js",
+    "frontend": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "start": "cd backend && node server.js"
+  },
+  "keywords": [
+    "citizendoc",
+    "government-services",
+    "react",
+    "express",
+    "mysql"
+  ],
+  "author": "CitizenDoc Team",
+  "license": "ISC"
+}

@@ -1,9 +1,14 @@
 /**
- * GovCenter Assistant — Floating Chatbot Styles
- * Namespace: .govcenter-chatbot*
- * Royal Blue + White design system matching the Scheme Filtering module.
- * Scoped to avoid polluting teammates' CSS.
+ * OneConnect AI — Floating Chatbot Stylesheet
+ * Namespace: .govcenter-chatbot-*
+ *
+ * Royal Blue + White design system matching the main portal's theme.
+ * Scoped to avoid polluting other team members' components.
  */
+
+/* Google Fonts — Noto Sans covers Latin + Tamil, Hindi (Devanagari),
+   Telugu, Kannada, and Malayalam scripts without extra setup */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&family=Noto+Sans+Tamil:wght@400;600;700&family=Noto+Sans+Telugu:wght@400;600;700&family=Noto+Sans+Kannada:wght@400;600;700&family=Noto+Sans+Malayalam:wght@400;600;700&family=Inter:wght@400;600;700&display=swap');
 
 /* ============================================================
    DESIGN TOKENS (locally scoped inside chatbot root)
@@ -28,7 +33,7 @@
   --gc-shadow-md:     0 4px 12px rgba(16, 24, 40, 0.12), 0 2px 4px rgba(16, 24, 40, 0.06);
   --gc-shadow-lg:     0 16px 32px rgba(16, 24, 40, 0.14), 0 4px 8px rgba(16, 24, 40, 0.06);
   --gc-transition:    0.22s cubic-bezier(0.4, 0, 0.2, 1);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-family: 'Inter', 'Noto Sans', 'Noto Sans Tamil', 'Noto Sans Devanagari', 'Noto Sans Telugu', 'Noto Sans Kannada', 'Noto Sans Malayalam', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
 }
 
 /* ============================================================
@@ -38,7 +43,7 @@
   position: fixed;
   bottom: 28px;
   right: 28px;
-  z-index: 9990;
+  z-index: 9999; /* Ensure high z-index to stay visible above page controls */
   width: 56px;
   height: 56px;
   border-radius: var(--gc-radius-full);
@@ -77,7 +82,7 @@
   stroke-width: 2;
 }
 
-/* Icon swap: show X when panel is open */
+/* Icon toggle swap on open */
 .govcenter-chatbot-button .gc-icon-chat  { display: block; }
 .govcenter-chatbot-button .gc-icon-close { display: none;  }
 .govcenter-chatbot-button.gc-open .gc-icon-chat  { display: none;  }
@@ -90,9 +95,10 @@
   position: fixed;
   bottom: 96px;
   right: 28px;
-  z-index: 9989;
+  z-index: 9998;
   width: 390px;
-  max-height: 580px;
+  height: 580px;
+  max-height: 80vh;
   display: flex;
   flex-direction: column;
   background-color: var(--gc-white);
@@ -101,7 +107,7 @@
   box-shadow: var(--gc-shadow-lg);
   overflow: hidden;
 
-  /* Collapsed / hidden state */
+  /* Hidden state */
   opacity: 0;
   transform: translateY(16px) scale(0.97);
   pointer-events: none;
@@ -156,7 +162,7 @@
 }
 
 .govcenter-chatbot-header-title {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--gc-white);
   letter-spacing: 0.01em;
@@ -165,8 +171,8 @@
 
 .govcenter-chatbot-header-subtitle {
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.80);
-  margin-top: 1px;
+  color: rgba(255, 255, 255, 0.85);
+  margin-top: 2px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -185,8 +191,9 @@
   width: 7px;
   height: 7px;
   border-radius: var(--gc-radius-full);
-  background-color: #4ade80;
+  background-color: #4ADE80;
   flex-shrink: 0;
+  box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.4);
 }
 
 .govcenter-chatbot-close-btn {
@@ -208,15 +215,85 @@
   background: rgba(255, 255, 255, 0.22);
 }
 
-.govcenter-chatbot-close-btn:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.7);
-  outline-offset: 2px;
-}
-
 .govcenter-chatbot-close-btn svg {
   width: 15px;
   height: 15px;
   stroke-width: 2.5;
+  stroke: currentColor;
+}
+
+/* ============================================================
+   LANGUAGE SELECTOR
+   ============================================================ */
+.govcenter-chatbot-lang-wrapper {
+  position: relative;
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+
+.govcenter-chatbot-lang-btn {
+  font-size: 0.74rem;
+  font-weight: 600;
+  background-color: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--gc-white);
+  padding: 4px 10px;
+  border-radius: var(--gc-radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: background-color var(--gc-transition);
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.govcenter-chatbot-lang-btn:hover {
+  background-color: rgba(255, 255, 255, 0.26);
+}
+
+.govcenter-chatbot-lang-btn:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+.govcenter-chatbot-lang-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 6px;
+  background-color: var(--gc-white);
+  border: 1px solid var(--gc-border);
+  border-radius: var(--gc-radius-md);
+  box-shadow: var(--gc-shadow-lg);
+  list-style: none;
+  padding: 4px 0;
+  width: 105px;
+  z-index: 10000;
+  display: none;
+  margin-bottom: 0;
+}
+
+.govcenter-chatbot-lang-dropdown.gc-show {
+  display: block;
+}
+
+.gc-lang-opt {
+  font-size: 0.8rem;
+  color: var(--gc-text);
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background-color var(--gc-transition);
+}
+
+.gc-lang-opt:hover {
+  background-color: var(--gc-primary-light);
+  color: var(--gc-primary);
+}
+
+.gc-lang-opt.active {
+  font-weight: 700;
+  color: var(--gc-primary);
+  background-color: var(--gc-primary-light);
 }
 
 /* ============================================================
@@ -228,16 +305,13 @@
   padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   background-color: var(--gc-bg);
   scroll-behavior: smooth;
 }
 
 .govcenter-chatbot-messages::-webkit-scrollbar {
   width: 4px;
-}
-.govcenter-chatbot-messages::-webkit-scrollbar-track {
-  background: transparent;
 }
 .govcenter-chatbot-messages::-webkit-scrollbar-thumb {
   background: var(--gc-border);
@@ -249,6 +323,7 @@
   display: flex;
   flex-direction: column;
   max-width: 88%;
+  gap: 6px;
 }
 
 .govcenter-chatbot-message.gc-msg-user {
@@ -259,12 +334,13 @@
 .govcenter-chatbot-message.gc-msg-bot {
   align-self: flex-start;
   align-items: flex-start;
+  width: 100%;
 }
 
 .govcenter-chatbot-bubble {
-  padding: 10px 13px;
+  padding: 10px 14px;
   border-radius: var(--gc-radius-md);
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   line-height: 1.55;
   color: var(--gc-text);
   white-space: pre-wrap;
@@ -274,32 +350,40 @@
 .gc-msg-user .govcenter-chatbot-bubble {
   background-color: var(--gc-primary);
   color: var(--gc-white);
-  border-bottom-right-radius: var(--gc-radius-sm);
+  border-bottom-right-radius: 2px;
 }
 
 .gc-msg-bot .govcenter-chatbot-bubble {
   background-color: var(--gc-white);
   border: 1px solid var(--gc-border);
-  border-bottom-left-radius: var(--gc-radius-sm);
+  border-bottom-left-radius: 2px;
+  box-shadow: var(--gc-shadow-sm);
 }
 
-/* Scheme result cards inside chat */
+/* Scheme cards inside chat */
 .gc-scheme-card {
   background: var(--gc-white);
   border: 1px solid var(--gc-border);
   border-radius: var(--gc-radius-md);
-  padding: 10px 12px;
-  margin-top: 6px;
-  max-width: 300px;
+  padding: 12px 14px;
+  margin-top: 4px;
   width: 100%;
+  box-shadow: var(--gc-shadow-sm);
+  transition: var(--gc-transition);
+  box-sizing: border-box;
+}
+
+.gc-scheme-card:hover {
+  border-color: var(--gc-primary);
+  box-shadow: 0 0 0 2px rgba(65, 105, 225, 0.1);
 }
 
 .gc-scheme-card-name {
   font-size: 0.82rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--gc-text);
   line-height: 1.35;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .gc-scheme-card-meta {
@@ -310,37 +394,40 @@
 }
 
 .gc-scheme-tag {
-  font-size: 0.72rem;
-  font-weight: 500;
+  font-size: 0.68rem;
+  font-weight: 600;
   padding: 2px 8px;
   border-radius: var(--gc-radius-full);
   background-color: var(--gc-primary-light);
-  color: var(--gc-primary-dark);
+  color: var(--gc-primary);
+  border: 1px solid rgba(65, 105, 225, 0.2);
+}
+
+.gc-scheme-tag.gc-tag-level {
+  background-color: #F1F5F9;
+  color: var(--gc-text-muted);
+  border-color: var(--gc-border);
 }
 
 .gc-scheme-tag.gc-tag-eligible {
   background-color: var(--gc-success-light);
   color: var(--gc-success);
-}
-
-.gc-scheme-tag.gc-tag-level {
-  background-color: #F0F4FF;
-  color: #4F5A8A;
+  border-color: rgba(22, 163, 74, 0.25);
 }
 
 .gc-scheme-card-benefit {
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   color: var(--gc-text-muted);
-  line-height: 1.4;
+  line-height: 1.45;
   border-top: 1px solid var(--gc-border);
   padding-top: 6px;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 .gc-scheme-view-btn {
   display: inline-block;
   margin-top: 8px;
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 600;
   color: var(--gc-primary);
   background: none;
@@ -350,10 +437,69 @@
   text-decoration: underline;
   text-underline-offset: 2px;
   font-family: inherit;
+  align-self: flex-start;
 }
 
 .gc-scheme-view-btn:hover {
   color: var(--gc-primary-dark);
+}
+
+/* Scheme Quick-action Row & Buttons inside chat response */
+.govcenter-chatbot-scheme-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 2px;
+  width: 100%;
+}
+
+.govcenter-chatbot-action-btn-scheme {
+  font-size: 0.72rem;
+  font-weight: 600;
+  font-family: inherit;
+  padding: 4px 10px;
+  border-radius: var(--gc-radius-full);
+  border: 1px solid var(--gc-border);
+  background-color: var(--gc-white);
+  color: var(--gc-text);
+  cursor: pointer;
+  transition: var(--gc-transition);
+}
+
+.govcenter-chatbot-action-btn-scheme:hover {
+  background-color: var(--gc-primary-light);
+  border-color: var(--gc-primary);
+  color: var(--gc-primary);
+}
+
+/* Global Quick action button (e.g. Show eligible only) */
+.govcenter-chatbot-action-btn-global {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 12px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  background-color: var(--gc-primary-light);
+  color: var(--gc-primary);
+  border: 1px solid rgba(65, 105, 225, 0.3);
+  border-radius: var(--gc-radius-full);
+  cursor: pointer;
+  transition: var(--gc-transition);
+  margin-top: 2px;
+}
+
+.govcenter-chatbot-action-btn-global:hover:not(:disabled) {
+  background-color: var(--gc-primary);
+  color: var(--gc-white);
+}
+
+.govcenter-chatbot-action-btn-global:disabled {
+  opacity: 0.7;
+  cursor: default;
+  background-color: var(--gc-success-light);
+  color: var(--gc-success);
+  border-color: rgba(22, 163, 74, 0.25);
 }
 
 /* ---- Typing Indicator ---- */
@@ -361,11 +507,11 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  padding: 10px 13px;
+  padding: 10px 14px;
   background-color: var(--gc-white);
   border: 1px solid var(--gc-border);
   border-radius: var(--gc-radius-md);
-  border-bottom-left-radius: var(--gc-radius-sm);
+  border-bottom-left-radius: 2px;
   width: fit-content;
 }
 
@@ -376,20 +522,19 @@
   background-color: var(--gc-text-muted);
   animation: gc-typing-bounce 1.2s infinite ease-in-out;
 }
-
 .govcenter-chatbot-typing-dot:nth-child(2) { animation-delay: 0.2s; }
 .govcenter-chatbot-typing-dot:nth-child(3) { animation-delay: 0.4s; }
 
 @keyframes gc-typing-bounce {
-  0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
-  30%           { transform: translateY(-5px); opacity: 1; }
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30%           { transform: translateY(-4px); opacity: 1; }
 }
 
 /* ============================================================
    QUICK SUGGESTIONS
    ============================================================ */
 .govcenter-chatbot-suggestions {
-  padding: 8px 12px 4px;
+  padding: 8px 12px;
   background-color: var(--gc-bg);
   border-top: 1px solid var(--gc-border);
   display: flex;
@@ -399,27 +544,22 @@
 }
 
 .govcenter-chatbot-suggestion-btn {
-  font-size: 0.78rem;
-  font-weight: 500;
+  font-size: 0.76rem;
+  font-weight: 600;
   font-family: inherit;
-  padding: 5px 11px;
+  padding: 5px 12px;
   border-radius: var(--gc-radius-full);
   border: 1px solid var(--gc-primary);
   background-color: var(--gc-white);
   color: var(--gc-primary);
   cursor: pointer;
-  transition: background-color var(--gc-transition), color var(--gc-transition);
+  transition: var(--gc-transition);
   white-space: nowrap;
 }
 
 .govcenter-chatbot-suggestion-btn:hover {
   background-color: var(--gc-primary-light);
   color: var(--gc-primary-dark);
-}
-
-.govcenter-chatbot-suggestion-btn:focus-visible {
-  outline: 2px solid var(--gc-primary);
-  outline-offset: 2px;
 }
 
 /* ============================================================
@@ -438,8 +578,8 @@
 .govcenter-chatbot-input {
   flex: 1;
   height: 38px;
-  padding: 0 12px;
-  font-size: 0.875rem;
+  padding: 0 14px;
+  font-size: 0.85rem;
   font-family: inherit;
   color: var(--gc-text);
   background-color: var(--gc-bg);
@@ -447,10 +587,6 @@
   border-radius: var(--gc-radius-full);
   outline: none;
   transition: border-color var(--gc-transition), box-shadow var(--gc-transition);
-}
-
-.govcenter-chatbot-input::placeholder {
-  color: var(--gc-text-muted);
 }
 
 .govcenter-chatbot-input:focus {
@@ -478,15 +614,11 @@
   transform: scale(1.05);
 }
 
-.govcenter-chatbot-send-btn:focus-visible {
-  outline: 3px solid var(--gc-primary-light);
-  outline-offset: 2px;
-}
-
 .govcenter-chatbot-send-btn svg {
-  width: 17px;
-  height: 17px;
+  width: 16px;
+  height: 16px;
   stroke-width: 2.2;
+  stroke: currentColor;
 }
 
 /* ============================================================
@@ -497,9 +629,8 @@
     width: calc(100vw - 24px);
     right: 12px;
     bottom: 88px;
-    max-height: 68vh;
+    max-height: 70vh;
   }
-
   .govcenter-chatbot-button {
     bottom: 20px;
     right: 16px;
@@ -513,9 +644,8 @@
     width: calc(100vw - 16px);
     right: 8px;
     bottom: 82px;
-    max-height: 72vh;
+    max-height: 75vh;
   }
-
   .govcenter-chatbot-button {
     bottom: 16px;
     right: 12px;

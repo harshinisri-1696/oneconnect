@@ -63,7 +63,14 @@
         console.warn('SchemeModule: window.initSchemeResults function not found.');
       }
 
-      // 5. Execute initial filtering pipeline
+      // 5. Initialize chatbot component (if chatbot.js is loaded before scheme-filter.js)
+      if (typeof window.initSchemeChatbot === 'function') {
+        this.chatbot = window.initSchemeChatbot(this);
+      } else {
+        this.chatbot = null;
+      }
+
+      // 6. Execute initial filtering pipeline
       this.applyFilters();
     }
 

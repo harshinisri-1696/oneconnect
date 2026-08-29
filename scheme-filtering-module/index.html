@@ -9,6 +9,9 @@
   <!-- 1. Include Module CSS -->
   <link rel="stylesheet" href="css/scheme-filter.css">
   
+  <!-- Global Chatbot Style -->
+  <link rel="stylesheet" href="../chatbot/chatbot.css">
+  
   <!-- Demo Environment Styling (represents the host application) -->
   <style>
     :root {
@@ -364,6 +367,8 @@
 
   <!-- 3. Include Module Components -->
   <script src="js/scheme-results.js"></script>
+  <script src="../chatbot/chatbot.js"></script>
+  <script src="js/chatbot.js"></script>
   <script src="js/scheme-filter.js"></script>
 
   <!-- Demo Harness Logic -->
@@ -396,6 +401,15 @@
       // Render initial demo profile
       updateDemoProfileBanner(activeProfile);
 
+      // Initialize the Global Chatbot once at the ROOT/GLOBAL layout level
+      const globalChatbot = window.initGovCenterChatbot({
+        dataset: window.SCHEMES_DATA || [],
+        profile: activeProfile,
+        onSchemeSelect: (scheme) => {
+          console.log('Global Chatbot callback - Scheme selected:', scheme);
+        }
+      });
+
       // 2. Initialize the Reusable Filtering Module
       const schemeModule = window.initializeSchemeModule({
         container: '#scheme-filter-container',
@@ -406,6 +420,10 @@
         },
         onSchemeSelect: (scheme) => {
           console.log('Sandbox - Scheme selected:', scheme);
+          // Pass the scheme selection context dynamically to the global chatbot
+          if (window.oneConnectChatbot) {
+            window.oneConnectChatbot.setSchemeContext(scheme);
+          }
         }
       });
 
@@ -449,6 +467,11 @@
 
         // Pass updated profile data into the Module via public API
         schemeModule.updateProfile(activeProfile);
+
+        // Pass updated profile data into the global chatbot via context API
+        if (window.oneConnectChatbot) {
+          window.oneConnectChatbot.setProfile(activeProfile);
+        }
 
         // Update host interface
         updateDemoProfileBanner(activeProfile);
